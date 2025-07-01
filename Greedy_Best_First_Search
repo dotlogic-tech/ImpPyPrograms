@@ -1,0 +1,27 @@
+import heapq
+
+def gbfs(graph, start, goal, h):
+    pq = [(h[start], start, [])]
+    visited = set()
+
+    while pq:
+        f, node, path = heapq.heappop(pq)
+        if node in visited:
+            continue
+        path = path + [node]
+        if node == goal:
+            return path
+        visited.add(node)
+        for neighbor, _ in graph[node]:
+            heapq.heappush(pq, (h[neighbor], neighbor, path))
+    return None
+
+# Example
+graph = {
+    'A': [('B', 1), ('C', 3)],
+    'B': [('D', 4)],
+    'C': [('D', 1)],
+    'D': []
+}
+heuristic = {'A': 5, 'B': 2, 'C': 2, 'D': 0}
+print(gbfs(graph, 'A', 'D', heuristic))
